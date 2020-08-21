@@ -16,6 +16,7 @@ code {
   display: flex;
   list-style: none;
   outline: none;
+  width: fit-content;
 }
 .pagination > .active > a{
   background-color: #47ccde ;
