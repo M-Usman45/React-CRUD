@@ -15,7 +15,7 @@ class ViewPosts extends Component {
       posts:[],
       offset: 0 ,
       currentPage: 0,
-      perPage: 10,
+      perPage: 5,
       pageCount: 0 ,
       paginateData: [] 
     }
