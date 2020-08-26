@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import moment from "moment"
-import * as postsService from "../services/postService"
+import * as postsService from "../../services/postService"
 
 class ViewSinglePost extends Component {
     constructor(props) {

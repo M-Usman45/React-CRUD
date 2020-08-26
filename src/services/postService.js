@@ -1,20 +1,17 @@
-import axios from "axios"
-import * as authService from "./authService"
-
-axios.defaults.headers.common["AUTHORIZATION"] = authService.getjwt()
+import {axiosInstence as axios} from "./axiosService"
 
 export async function getAllPosts(){
-    return await axios.get(process.env.REACT_APP_URL+"/posts")
+    return axios.get(`posts`)
 }
 
 export async function createPost(text){
-    return await axios.post(process.env.REACT_APP_URL+"/posts" , {text})
+    return await axios.post(`posts` , {text})
 }
 
 export async function deletePost(id){
-    return await axios.delete(process.env.REACT_APP_URL+"/posts/"+id)     
+    return await axios.delete(`posts/${id}`)     
 }
  
 export async function getSinglePost(id){
-    return await axios.get(process.env.REACT_APP_URL+"/posts/"+id)     
+    return await axios.get(`posts/${id}`)     
 }

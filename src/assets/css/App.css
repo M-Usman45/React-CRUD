@@ -22,7 +22,7 @@ body, html, .App, #root, .auth-wrapper {
 }
 
 .auth-wrapper {
-  background-image: url("./assets/bgImage.jpg");
+  background-image: url("../images/bgImage.jpg");
   background-size: cover;
   /* background: #1C8EF9 ; */
   display: flex;

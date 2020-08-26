@@ -1,21 +1,20 @@
 import React from 'react';
 import {Route ,Switch ,BrowserRouter as Router, Redirect} from "react-router-dom"
 import 'react-toastify/dist/ReactToastify.css';
-import SignUp from './components/signUp';
-import SignIn from "./components/signIn"
-import Dashboard from './components/dashboard';
-import * as  authService from "./services/authService"
-import './App.css';
+import SignUp from './components/common/signUp';
+import SignIn from "./components/common/signIn"
+import Dashboard from './components/common/dashboard';
+import '../src/assets/css/App.css';
+import ProtectedRoute from './components/common/protectedRoute';
 
 function App() {
-const isLogin = authService.getCurrentUser() ? true : false
-if(isLogin) return <Dashboard />
   return (
     <Router>
       <div className="App">
-              <Switch>
+            <Switch>
                 <Route exact path="/" component={SignIn} />
                 <Route path="/signUp" component={SignUp} />
+                <ProtectedRoute path="/dashboard" component={Dashboard} />
                 <Redirect to="/"/>
               </Switch>
       </div>

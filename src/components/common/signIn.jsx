@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Joi from "joi-browser"
 import {toast , ToastContainer} from "react-toastify"
-import * as authService from "../services/authService"
+import * as authService from "../../services/authService"
 import {validate , validateProperty , renderErrorMessage, getSpinner } from "./formElements"
 class SignIn extends Component {
   constructor(props) {
@@ -33,7 +33,6 @@ class SignIn extends Component {
     const errors = validate(data , this.schema)
     this.setState({error: errors || {} })
     if(errors){  
-      toast.error(`Validation Errors`)
       this.setState({loading : false , isdisabled: false})
       return
     }
@@ -42,7 +41,7 @@ class SignIn extends Component {
         localStorage.setItem("token" ,result.data.token)
         toast.success("LoggedIn Successfully")
         this.setState({loading : false})
-        setTimeout(()=>{ window.location="/"} , 1000)   
+        setTimeout(()=>{ window.location="/dashboard"} , 1000)   
     }).catch(error=>{
         toast.error(error.message)
         this.setState({loading: false , isdisabled: false})  

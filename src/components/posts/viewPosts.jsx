@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import moment from "moment"
 import jwtDecode from "jwt-decode"
-import "../viewPosts.css"
+import "../../assets/css/viewPosts.css"
 import ReactPaginate from "react-paginate"
-import * as postService from "../services/postService"
-import * as authService from "../services/authService"
+import * as postService from "../../services/postService"
+import * as authService from "../../services/authService"
 import { toast , ToastContainer} from 'react-toastify';
 import { Link } from 'react-router-dom'
 

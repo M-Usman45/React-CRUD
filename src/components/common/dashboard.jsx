@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import ViewPosts from './viewPosts';
-import CreatePost from "./createPost"
-import CreateProfile from "./createProfile"
-import ViewSinglePost from './viewSinglePost';
+import ViewPosts from '../posts/viewPosts';
+import CreatePost from "../posts/createPost"
+import CreateProfile from "../common/createProfile"
+import ViewSinglePost from '../posts/viewSinglePost';
+import ProtectedRoute from './protectedRoute';
 import jwtDecode from "jwt-decode"
-import {Route ,Switch ,BrowserRouter as Router} from "react-router-dom"
+import {Route ,Switch ,BrowserRouter as Router, Link} from "react-router-dom"
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -28,25 +29,24 @@ class Dashboard extends Component {
       <div className="collapse navbar-collapse justify-content-between" id="collapsibleNavbar">
         <ul className="navbar-nav">
           <li className="nav-item ">
-            <a className="nav-link" href="/">View All Posts</a>
+            <Link className="nav-link" to="/viewPosts">View All Posts</Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/createProfile">Create Profile</a>
+            <Link className="nav-link" to="/createProfile">Create Profile</Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/createPost">Create New Post</a>
+            <Link className="nav-link" to="/createPost">Create New Post</Link>
           </li>
         </ul>
         <ul className="navbar-nav">
         <li className="nav-item">
-          <a className="nav-link" href='/' onClick={this.onSignOut}> SignOut </a>
+          <Link className="nav-link" onClick={this.onSignOut}> SignOut </Link>
         </li>
         </ul>
         </div>
       </nav>
       <Router>
       <Switch>
-        <Route exact path="/" component={ViewPosts} />
         <Route path="/viewPosts" component={ViewPosts} />
         <Route path="/createProfile" component={CreateProfile} />
         <Route path="/createPost" component={CreatePost} />
@@ -54,6 +54,7 @@ class Dashboard extends Component {
         <Route path="/viewPostDetails" render ={props=> <ViewSinglePost {...props}/> } />
       </Switch>
       </Router>
+
     </React.Fragment>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {toast , ToastContainer} from "react-toastify"
-import * as authService from "../services/authService"
+import * as authService from "../../services/authService"
 import {renderErrorMessage , getSpinner ,validateProperty ,validate } from "./formElements"
 import Joi from "joi-browser"
 
@@ -34,7 +34,6 @@ signUp = (e)=>{
   const errors = validate(data , this.schema)
   this.setState({ error: errors || {} })
   if(errors) {
-    toast.error("Validation Errors")
     this.setState({loading : false , isdisabled: false})
     return;
   }
@@ -42,7 +41,7 @@ signUp = (e)=>{
   authService.signUp(data.name , data.email , data.password)
     .then(result=>{
       localStorage.setItem("AUTHORIZATION" , result.data)        
-      toast.success("LoggedIn Successfully")
+      toast.success("SignUp Successfully")
       this.setState({loading: false })
       setTimeout(()=>window.location="/")
      })

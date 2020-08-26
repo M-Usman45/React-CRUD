@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Joi  from 'joi-browser';
-import "../createposts.css"
+import "../../assets/css/createposts.css"
 import {toast , ToastContainer} from "react-toastify"
-import * as postService from "../services/postService"
-import {validate , validateProperty , getSpinner ,renderErrorMessage} from "./formElements"
+import * as postService from "../../services/postService"
+import {validate , validateProperty , getSpinner ,renderErrorMessage} from "../common/formElements"
 
 class CreatePost extends Component {
     constructor(props) {
@@ -34,7 +34,6 @@ class CreatePost extends Component {
        const errors = validate(data , this.schema)
        this.setState({error : errors || {} })
        if(errors) {
-          toast.error("Valdation Error")
           this.setState({loading : false , isdisabled: false})
           return;
        }

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import {toast , ToastContainer} from "react-toastify"
 import {validate , validateProperty , getSpinner ,renderErrorMessage} from "./formElements"
-import * as authService from "../services/authService"
+import * as authService from "../../services/authService"
 import Joi  from 'joi-browser';
-import "../createProfile.css"
+import "../../assets/css/createProfile.css"
 class CreateProfile extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +57,6 @@ class CreateProfile extends Component {
       const errors = validate(data , this.schema)
       this.setState({error : errors || {}})
       if(errors){
-        toast.error("Validation Error")
         this.setState({isdisabled: false , loading: false})
         return ;
       }
