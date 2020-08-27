@@ -18,6 +18,31 @@ class PostsDatatable extends Component {
 	componentDidMount() {
 		this.getPosts()
 	}
+	componentDidUpdate(){
+		const rows = document.getElementsByClassName("doBktq")
+		document.addEventListener("dragover" , e => e.preventDefault())
+		for(let row of rows){
+				 row.draggable = true
+				 row.addEventListener("dragstart" , event => {
+						 event.dataTransfer.setData("text/plain",`${event.clientY},${event.target.id}`);
+						 event.target.parentNode.id = "parent"
+         })
+		}
+		document.addEventListener("drop", event=> {
+			const [Sourceposition , sourceId] = event.dataTransfer.getData("text/plain").split(','); 
+			const target = event.target.parentNode;
+			const source = document.getElementById(sourceId)
+			if(! (target || source) )
+				return
+			const parent = target.parentNode
+			if(!parent || parent.id!== "parent")
+			 return 
+			if(event.clientY > +Sourceposition) parent.insertBefore(source , target.nextSibling)
+			else
+			parent.insertBefore(source , target)
+
+		}) 
+	}
 	getPosts = () => {
 		postService
 			.getAllPosts()
