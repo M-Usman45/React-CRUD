@@ -1,4 +1,4 @@
-import {axiosInstence as axios} from "./axiosService"
+import {authenticatedInstence as axios} from "./axiosService"
 
 export async function getAllPosts(){
     return axios.get(`posts`)

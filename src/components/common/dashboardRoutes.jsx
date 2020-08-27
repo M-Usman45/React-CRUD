@@ -6,6 +6,7 @@ import ViewSinglePost from '../posts/viewSinglePost'
 import ProtectedRoute from './protectedRoute'
 import { Switch, Redirect } from 'react-router-dom'
 import GoogleMap from './googleMap'
+import Calculator from './calculator';
 
 const DashboardRoutes = () => {
 	return (
@@ -14,6 +15,7 @@ const DashboardRoutes = () => {
 			<ProtectedRoute path="/createProfile" component={CreateProfile} />
 			<ProtectedRoute path="/createPost" component={CreatePost} />
 			<ProtectedRoute path="/googleMap" component={GoogleMap} />
+			<ProtectedRoute path="/calculator" component={Calculator} />
 			<ProtectedRoute path="/viewPostDetails" render={(props) => <ViewSinglePost {...props} />} />
 			<Redirect to="/" />
 		</Switch>

@@ -1,6 +1,6 @@
 import axios from "axios"
  
-export const axiosInstence = axios.create({
+export const authenticatedInstence = axios.create({
     baseURL : process.env.REACT_APP_URL,
     headers: {
         common: {
@@ -10,3 +10,6 @@ export const axiosInstence = axios.create({
 }) 
 
 
+export const instence = axios.create({
+    baseURL : process.env.REACT_APP_URL
+}) 

@@ -2,7 +2,6 @@ import React from 'react'
 import jwtDecode from 'jwt-decode'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
 import DashboardRoutes from './dashboardRoutes'
-import GoogleMap from './googleMap'
 
 const NavBar = () => {
 	const onSignOut = () => {
@@ -55,7 +54,7 @@ const NavBar = () => {
 						</ul>
 						<ul className="navbar-nav">
 							<li className="nav-item">
-								<Link className="nav-link" onClick={onSignOut}>
+								<Link className="nav-link" to="/" onClick={onSignOut}>
 									SignOut
 								</Link>
 							</li>
