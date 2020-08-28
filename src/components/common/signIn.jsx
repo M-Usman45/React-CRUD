@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Joi from "joi-browser"
-import {toast , ToastContainer} from "react-toastify"
+import {toast} from "react-toastify"
 import * as authService from "../../services/authService"
 import {validate , validateProperty , renderErrorMessage, getSpinner } from "./formElements"
 class SignIn extends Component {
@@ -41,7 +41,7 @@ class SignIn extends Component {
         localStorage.setItem("token" ,result.data.token)
         toast.success("LoggedIn Successfully")
         this.setState({loading : false})
-        setTimeout(()=>{ window.location="/dashboard"} , 1000)   
+        this.props.history.push({pathname: "/dashboard"})   
     }).catch(error=>{
         toast.error(error.message)
         this.setState({loading: false , isdisabled: false})  
@@ -52,7 +52,6 @@ class SignIn extends Component {
       const {error , isdisabled , loading} = this.state
     return (
       <React.Fragment>
-                <ToastContainer position="top-right" autoClose={1000} hideProgressBar={false} newestOnTop={false} closeOnClick  pauseOnFocusLoss pauseOnHover />
            <div className="auth-wrapper">
             <div className="auth-inner">
            <form>

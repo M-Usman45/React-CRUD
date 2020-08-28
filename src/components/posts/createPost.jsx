@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import '../../assets/css/createposts.css'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast} from 'react-toastify'
 import * as postService from '../../services/postService'
 import { validate, validateProperty, getSpinner, renderErrorMessage } from '../common/formElements'
 
@@ -42,16 +42,15 @@ class CreatePost extends Component {
 		postService
 			.createPost(data.text)
 			.then((result) => {
+				this.props.history.push({ pathname: '/viewPosts' })
 				toast.success('Post Created Successfully!')
-				this.setState({ loading: false })
-				window.location = '/viewPosts'
 			})
 			.catch((error) => {
 				toast.error(error.message)
 				if (error.response.status === 401) {
 					toast.info('Token Expired , Login Again')
 					localStorage.removeItem('token')
-					window.history.pushState('/')
+					this.props.history.pus({pathname: "/createPost"})
 					this.setState({ loading: false, isdisabled: false })
 				}
 			})
@@ -60,15 +59,7 @@ class CreatePost extends Component {
 		const { isdisabled, loading, error } = this.state
 		return (
 			<React.Fragment>
-				<ToastContainer
-					position="top-right"
-					autoClose={2000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					pauseOnFocusLoss
-					pauseOnHover
-				/>
+
 				<div className="custom-container">
 					<div className="inner-box">
 						<h2> Create Post </h2>

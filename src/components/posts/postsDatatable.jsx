@@ -4,7 +4,7 @@ import moment from 'moment'
 import jwtDecode from 'jwt-decode'
 import * as postService from '../../services/postService'
 import * as authService from '../../services/authService'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast} from 'react-toastify'
 import { Link } from 'react-router-dom'
 import '../../assets/css/viewPosts.css'
 
@@ -18,30 +18,29 @@ class PostsDatatable extends Component {
 	componentDidMount() {
 		this.getPosts()
 	}
-	componentDidUpdate(){
-		const rows = document.getElementsByClassName("doBktq")
-		document.addEventListener("dragover" , e => e.preventDefault())
-		for(let row of rows){
-				 row.draggable = true
-				 row.addEventListener("dragstart" , event => {
-						 event.dataTransfer.setData("text/plain",`${event.clientY},${event.target.id}`);
-						 event.target.parentNode.id = "parent"
-         })
+	componentDidUpdate() {
+		this.DOMevents()
+	}
+	DOMevents = () => {
+		const rows = document.getElementsByClassName('doBktq')
+		document.addEventListener('dragover', (e) => e.preventDefault())
+		for (let row of rows) {
+			row.draggable = true
+			row.addEventListener('dragstart', (event) => {
+				event.dataTransfer.setData('text/plain', `${event.clientY},${event.target.id}`)
+				event.target.parentNode.id = 'parent'
+			})
 		}
-		document.addEventListener("drop", event=> {
-			const [Sourceposition , sourceId] = event.dataTransfer.getData("text/plain").split(','); 
-			const target = event.target.parentNode;
+		document.addEventListener('drop', (event) => {
+			const [ Sourceposition, sourceId ] = event.dataTransfer.getData('text/plain').split(',')
+			const target = event.target.parentNode
 			const source = document.getElementById(sourceId)
-			if(! (target || source) )
-				return
+			if (!(target || source)) return
 			const parent = target.parentNode
-			if(!parent || parent.id!== "parent")
-			 return 
-			if(event.clientY > +Sourceposition) parent.insertBefore(source , target.nextSibling)
-			else
-			parent.insertBefore(source , target)
-
-		}) 
+			if (!parent || parent.id !== 'parent') return
+			if (event.clientY > +Sourceposition) parent.insertBefore(source, target.nextSibling)
+			else parent.insertBefore(source, target)
+		})
 	}
 	getPosts = () => {
 		postService
@@ -154,15 +153,6 @@ class PostsDatatable extends Component {
 			)
 		return (
 			<React.Fragment>
-				<ToastContainer
-					position="top-right"
-					autoClose={2000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					pauseOnFocusLoss
-					pauseOnHover
-				/>
 				<div className="post-container">
 					<div className="post-inner-box ">
 						<DataTable title="Posts Details" columns={this.columns} data={posts} pagination={true} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {toast , ToastContainer} from "react-toastify"
+import {toast } from "react-toastify"
 import {validate , validateProperty , getSpinner ,renderErrorMessage} from "./formElements"
 import * as authService from "../../services/authService"
 import Joi  from 'joi-browser';
@@ -64,14 +64,14 @@ class CreateProfile extends Component {
         .then(result=>{console.log(result)
           toast.success("Post created successfully")
           this.setState({loading : false})
-          setTimeout(()=> window.location="/createProfile" ,2000)
+          this.props.history.push({pathname: "/createProfile"})
         })
         .catch(err=>{
           toast.error(err.message)
           if(err.response.status === 401){
             toast.info("Token Expired , Login Again")
             localStorage.removeItem("token")
-            setTimeout(() => window.location="/" , 3000);
+            this.props.history.push({pathname: "/"})
           }
           this.setState({isdisabled : false , loading: false})
         })
@@ -81,8 +81,7 @@ class CreateProfile extends Component {
         const {error , isdisabled ,loading} = this.state
         return (  
             <React.Fragment>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick  pauseOnFocusLoss pauseOnHover />
-              <div className="custom-container">
+             <div className="custom-container">
                 <div className="inner-box">
 
                     <h2> Create Profile </h2>

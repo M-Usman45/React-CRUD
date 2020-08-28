@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {toast , ToastContainer} from "react-toastify"
+import {toast } from "react-toastify"
 import * as authService from "../../services/authService"
 import {renderErrorMessage , getSpinner ,validateProperty ,validate } from "./formElements"
 import Joi from "joi-browser"
@@ -43,7 +43,7 @@ signUp = (e)=>{
       localStorage.setItem("AUTHORIZATION" , result.data)        
       toast.success("SignUp Successfully")
       this.setState({loading: false })
-      setTimeout(()=>window.location="/")
+      this.props.history.push({pathname: "/"})
      })
     .catch(error=>{
       toast.error(error.message)
@@ -55,7 +55,6 @@ signUp = (e)=>{
     const {error , isdisabled , loading} = this.state
     return ( 
       <React.Fragment>
-                <ToastContainer position="top-right" autoClose={1000} hideProgressBar={false} newestOnTop={false} closeOnClick  pauseOnFocusLoss pauseOnHover />
         <div className="auth-wrapper">
             <div className="auth-inner">
            <form>

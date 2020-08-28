@@ -11,6 +11,7 @@ const MainRoutes = () => {
 		<Switch>
 			<Route exact path="/" component={SignIn} />
 			<Route path="/signUp" component={SignUp} />
+			<Route path="/dashboard" component={Dashboard} />
 			<Redirect to="/" />
 		</Switch>
 	)
