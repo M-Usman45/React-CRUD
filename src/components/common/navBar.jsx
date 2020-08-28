@@ -51,6 +51,11 @@ const NavBar = () => {
 									Calculator
 								</Link>
 							</li>
+							<li className="nav-item">
+								<Link className="nav-link" to="/web-cam">
+									Web Cam
+								</Link>
+							</li>
 						</ul>
 						<ul className="navbar-nav">
 							<li className="nav-item">

@@ -8,6 +8,7 @@ import { Switch } from 'react-router-dom'
 import GoogleMap from './googleMap'
 import Calculator from './calculator'
 import PostsDatatable from '../posts/postsDatatable'
+import MyWebCam from './webCam'
 
 const DashboardRoutes = () => {
 	return (
@@ -17,6 +18,7 @@ const DashboardRoutes = () => {
 			<ProtectedRoute path="/createPost" component={CreatePost} />
 			<ProtectedRoute path="/googleMap" component={GoogleMap} />
 			<ProtectedRoute path="/calculator" component={Calculator} />
+			<ProtectedRoute path="/web-cam" component={MyWebCam} />
 			<ProtectedRoute path="/viewPostDetails" render={(props) => <ViewSinglePost {...props} />} />
 			{/* <Redirect to="/" /> */}
 		</Switch>

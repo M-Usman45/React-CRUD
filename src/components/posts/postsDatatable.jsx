@@ -17,21 +17,24 @@ class PostsDatatable extends Component {
 	}
 	componentDidMount() {
 		this.getPosts()
+		this.DOMevents()
+	
 	}
 	componentDidUpdate() {
-		this.DOMevents()
-	}
-	DOMevents = () => {
 		const rows = document.getElementsByClassName('doBktq')
-		document.addEventListener('dragover', (e) => e.preventDefault())
 		for (let row of rows) {
 			row.draggable = true
-			row.addEventListener('dragstart', (event) => {
-				event.dataTransfer.setData('text/plain', `${event.clientY},${event.target.id}`)
-				event.target.parentNode.id = 'parent'
-			})
 		}
-		document.addEventListener('drop', (event) => {
+	}
+	componentWillUnmount(){
+		 this.removeDOMEvents()
+	}
+	removeDOMEvents = ()=>{
+		document.removeEventListener("dragover" , this.dragoverHandler)
+		document.removeEventListener("dragstart" , this.dragStartHandler)
+		document.removeEventListener("drop" , this.dropHandler)
+	}
+  dropHandler = event =>{
 			const [ Sourceposition, sourceId ] = event.dataTransfer.getData('text/plain').split(',')
 			const target = event.target.parentNode
 			const source = document.getElementById(sourceId)
@@ -40,7 +43,18 @@ class PostsDatatable extends Component {
 			if (!parent || parent.id !== 'parent') return
 			if (event.clientY > +Sourceposition) parent.insertBefore(source, target.nextSibling)
 			else parent.insertBefore(source, target)
-		})
+	}
+	dragStartHandler = event=>{
+			event.dataTransfer.setData('text/plain', `${event.clientY},${event.target.id}`)
+			event.target.parentNode.id = 'parent'
+	}
+
+  dragoverHandler = e => {e.preventDefault() }
+	
+	DOMevents = () => {
+		document.addEventListener('dragover', (e) => this.dragoverHandler(e))
+		document.addEventListener('dragstart', (e) => this.dragStartHandler(e))
+		document.addEventListener('drop', (e) => this.dropHandler(e) )
 	}
 	getPosts = () => {
 		postService
