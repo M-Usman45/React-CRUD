@@ -27,7 +27,6 @@ class MyWebCam extends Component {
     const tmpCanvas = document.createElement("canvas");
     tmpCanvas.width = newWidth;
     tmpCanvas.height = newHeight;
-  
     const ctx = tmpCanvas.getContext("2d");
     ctx.drawImage(
       canvas,
@@ -40,7 +39,6 @@ class MyWebCam extends Component {
       newWidth,
       newHeight
     );
-  
     return tmpCanvas;
   }
 
@@ -49,16 +47,13 @@ class MyWebCam extends Component {
       return;
     }
     const canvas = this.getResizedCanvas(previewCanvas, crop.width, crop.height);
-
     canvas.toBlob(
       blob => {
         const previewUrl = window.URL.createObjectURL(blob);
-  
         const anchor = document.createElement("a");
         anchor.download = "cropPreview.png";
         anchor.href = URL.createObjectURL(blob);
-        anchor.click();
-  
+        anchor.click();  
         window.URL.revokeObjectURL(previewUrl);
       },
       "image/png",
@@ -91,9 +86,6 @@ class MyWebCam extends Component {
     }
   }
 
-  
-
-
   getCroppedImg(image, crop, fileName) {
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
@@ -101,7 +93,6 @@ class MyWebCam extends Component {
     canvas.width = crop.width;
     canvas.height = crop.height;
     const ctx = canvas.getContext('2d');
-
     ctx.drawImage(
       image,
       crop.x * scaleX,
@@ -113,7 +104,6 @@ class MyWebCam extends Component {
       crop.width,
       crop.height
     );
-
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) {
@@ -165,64 +155,65 @@ onUpdate = ()=>{
     crop.height
   );
 }
-
+ componentDidMount() {
+  this.onUpdate()
+ }
  capture = () => {
-   if(this.state.imgSrc)
-   {
-      this.setState({imgSrc : ""})
-      return
-   }
-    const imageSrc = this.webcamRef.current.getScreenshot();
-    this.setState({imgSrc: imageSrc});
+  if(this.state.imgSrc)
+  {
+    this.setState({imgSrc : ""})
+    return
   }
+  const imageSrc = this.webcamRef.current.getScreenshot();
+  this.setState({imgSrc: imageSrc});
+ }
  
   render() { 
     const {imgSrc , crop , croppedImageUrl , completedCrop} = this.state
     return ( 
       <React.Fragment>
         <div className="custom-container">
-        <div className="inner-box">
-          {/* { imgSrc && <img className="mb-2" id = "capture-image" src = {imgSrc} alt={"capture"} /> } */}
-          { !imgSrc &&  <Webcam ref= {this.webcamRef}/>  }
-          {imgSrc && (
-            <ReactCrop
-            src={imgSrc}
-            crop={crop} 
-            ruleOfThirds
-            onImageLoaded={this.onImageLoaded}
-            onComplete={this.onCropComplete}
-            onChange={this.onCropChange}
-          />
-          )}
-          <button className="btn btn-primary" onClick={this.capture}>{ imgSrc ? "Camera" : "Capture" }</button>
+          <div className="inner-box">
+            { !imgSrc &&  <Webcam ref= {this.webcamRef}/>  }
+            {imgSrc && (
+              <ReactCrop
+                src={imgSrc}
+                crop={crop} 
+                ruleOfThirds
+                onImageLoaded={this.onImageLoaded}
+                onComplete={this.onCropComplete}
+                onChange={this.onCropChange}
+              />
+            )}
+            <button className="btn btn-primary" onClick={this.capture}>{ imgSrc ? "Camera" : "Capture" }</button>
           <div>
-        <canvas
-          ref={this.previewCanvasRef}
-          style={{
-            width: completedCrop?.width ?? 0,
-            height: completedCrop?.height ?? 0,
-            display: "none"
-          }}
-        />
+            <canvas
+              ref={this.previewCanvasRef}
+              style={{
+                width: completedCrop?.width ?? 0,
+                height: completedCrop?.height ?? 0,
+                display: "none"
+              }}
+            />
+          </div>
+          {croppedImageUrl && (
+            <img alt="Crop" className ="croped-image" src={croppedImageUrl} />
+          )}
+          { completedCrop &&
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() =>
+                this.generateDownload(this.previewCanvasRef.current, completedCrop)
+              }
+            >
+              Download cropped image
+            </button>
+          }
+        </div>
       </div>
-        {croppedImageUrl && (
-          <img alt="Crop" className ="croped-image" src={croppedImageUrl} />
-        )}
-        { completedCrop &&
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={() =>
-          this.generateDownload(this.previewCanvasRef.current, completedCrop)
-        }
-      >
-        Download cropped image
-      </button>
-  }
-        </div>
-        </div>
-      </React.Fragment>
-     );
+    </React.Fragment>
+  ); 
   }
 }
  

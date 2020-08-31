@@ -29,9 +29,6 @@ class Calculator extends Component {
 			}
 		}
 	}
-	onChnage = (e) => {
-		console.log(e.target.value)
-	}
 	render() {
 		const { buttons, output } = this.state
 		return (
