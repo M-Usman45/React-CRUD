@@ -8,31 +8,76 @@ import 'react-image-crop/dist/ReactCrop.css';
 class MyWebCam extends Component {
   constructor(props) {
     super(props);
-    this.state = { imgSrc: "",
+    this.state = { 
+      imgSrc: "",
       src: null,
+      completedCrop:"",
       crop: {
         unit: '%',
         width: 30,
         height: 16 / 9,
-        completedCrop:""
       },
     }
+    this.pixelRatio = 4
     this.previewCanvasRef = createRef()
     this.webcamRef= createRef();
   }
 
-  // If you setState the crop in here you should return false.
+  getResizedCanvas = (canvas, newWidth, newHeight) => {
+    const tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = newWidth;
+    tmpCanvas.height = newHeight;
+  
+    const ctx = tmpCanvas.getContext("2d");
+    ctx.drawImage(
+      canvas,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+      0,
+      0,
+      newWidth,
+      newHeight
+    );
+  
+    return tmpCanvas;
+  }
+
+  generateDownload = (previewCanvas, crop) => {
+    if (!crop || !previewCanvas) {
+      return;
+    }
+    const canvas = this.getResizedCanvas(previewCanvas, crop.width, crop.height);
+
+    canvas.toBlob(
+      blob => {
+        const previewUrl = window.URL.createObjectURL(blob);
+  
+        const anchor = document.createElement("a");
+        anchor.download = "cropPreview.png";
+        anchor.href = URL.createObjectURL(blob);
+        anchor.click();
+  
+        window.URL.revokeObjectURL(previewUrl);
+      },
+      "image/png",
+      1
+    );
+  }
+
+
   onImageLoaded = image => {
     this.imageRef = image;
   };
 
   onCropComplete = crop => {
     this.makeClientCrop(crop);
-    this.setState({CompletedCrop: crop})
+    this.setState({completedCrop: crop})
   };
 
   onCropChange = (crop, percentCrop) => {
-    this.setState({ crop });
+    this.setState({ crop: crop });
   };
 
   async makeClientCrop(crop) {
@@ -46,12 +91,8 @@ class MyWebCam extends Component {
     }
   }
 
-  generateDownload = (previewCanvas, crop) => {
-    console.log("convas" , previewCanvas + "Crop" , crop)
-    if (!crop || !previewCanvas) {
-      return;
-    }
-  }
+  
+
 
   getCroppedImg(image, crop, fileName) {
     const canvas = document.createElement('canvas');
@@ -76,7 +117,6 @@ class MyWebCam extends Component {
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) {
-          //reject(new Error('Canvas is empty'));
           console.error('Canvas is empty');
           return;
         }
@@ -88,6 +128,43 @@ class MyWebCam extends Component {
     });
   }
 
+componentDidUpdate(){
+  this.onUpdate()
+
+}
+
+onUpdate = ()=>{
+  const {completedCrop } = this.state
+  if (!completedCrop || !this.previewCanvasRef.current || !this.imgRef) {
+    return;
+  }
+
+  const image = this.imgRef.current;
+  const canvas = this.previewCanvasRef.current;
+  const crop = completedCrop;
+
+  const scaleX = image.naturalWidth / image.width;
+  const scaleY = image.naturalHeight / image.height;
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = crop.width * this.pixelRatio;
+  canvas.height = crop.height * this.pixelRatio;
+
+  ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+
+  ctx.drawImage(
+    image,
+    crop.x * scaleX,
+    crop.y * scaleY,
+    crop.width * scaleX,
+    crop.height * scaleY,
+    0,
+    0,
+    crop.width,
+    crop.height
+  );
+}
 
  capture = () => {
    if(this.state.imgSrc)
@@ -115,8 +192,6 @@ class MyWebCam extends Component {
             onImageLoaded={this.onImageLoaded}
             onComplete={this.onCropComplete}
             onChange={this.onCropChange}
-            // onChange={c => this.setState({crop: c})}
-            // onComplete={c => this.setState({CompletedCrop: c})}
           />
           )}
           <button className="btn btn-primary" onClick={this.capture}>{ imgSrc ? "Camera" : "Capture" }</button>
