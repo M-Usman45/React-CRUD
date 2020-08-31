@@ -182,7 +182,7 @@ onUpdate = ()=>{
       <React.Fragment>
         <div className="custom-container">
         <div className="inner-box">
-          { imgSrc && <img className="mb-2" id = "capture-image" src = {imgSrc} alt={"capture"} /> }
+          {/* { imgSrc && <img className="mb-2" id = "capture-image" src = {imgSrc} alt={"capture"} /> } */}
           { !imgSrc &&  <Webcam ref= {this.webcamRef}/>  }
           {imgSrc && (
             <ReactCrop
@@ -200,22 +200,25 @@ onUpdate = ()=>{
           ref={this.previewCanvasRef}
           style={{
             width: completedCrop?.width ?? 0,
-            height: completedCrop?.height ?? 0
+            height: completedCrop?.height ?? 0,
+            display: "none"
           }}
         />
       </div>
         {croppedImageUrl && (
-          <img alt="Crop" style={{ maxWidth: '100%' }} src={croppedImageUrl} />
+          <img alt="Crop" className ="croped-image" src={croppedImageUrl} />
         )}
+        { completedCrop &&
       <button
         type="button"
-        disabled={!completedCrop?.width || !completedCrop?.height}
+        className="btn btn-primary"
         onClick={() =>
           this.generateDownload(this.previewCanvasRef.current, completedCrop)
         }
       >
         Download cropped image
       </button>
+  }
         </div>
         </div>
       </React.Fragment>
